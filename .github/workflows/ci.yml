@@ -74,6 +74,10 @@ jobs:
         uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           image-ref: devfest-verifiable-ai:ci
-          format: table
+          format: json
+          output: trivy-results.json
           severity: HIGH,CRITICAL
-          exit-code: "1"
+          exit-code: "0"
+
+      - name: Enforce container scan
+        run: python scripts/check_trivy_report.py trivy-results.json
