@@ -46,6 +46,26 @@ condition to that exact command override.
 
 **Commit:** this cloud-readiness change
 
+## REG-005
+
+**Symptom:** The first GitHub Actions run failed Ruff import formatting for the thin
+source-tree attestation wrapper.
+
+**Root cause:** The wrapper was simplified after the last local lint invocation, so
+the committed form had one extra blank line between its import and module guard.
+
+**Why existing tests missed it:** Runtime tests imported the wrapper successfully;
+this was a style-gate defect, not a behavior failure.
+
+**Regression test:** The corrected file passes Ruff, and CI remains the independent
+release gate. CI also now runs `bash -n` against the deployment script.
+
+**Fix:** Apply Ruff's import formatting and rerun the full local checks.
+
+**Verification:** Local and replacement CI run pending.
+
+**Commit:** this CI repair change
+
 ## REG-003
 
 **Symptom:** A fresh virtual environment could install successfully, but pytest

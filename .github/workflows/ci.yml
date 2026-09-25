@@ -34,6 +34,7 @@ jobs:
           python -m ruff check .
           python -m ruff format --check .
           python -m mypy
+          bash -n deploy/deploy_confidential_space.sh
 
       - name: Test deterministic core and security boundaries
         run: |

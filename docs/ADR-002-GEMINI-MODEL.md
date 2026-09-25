@@ -9,6 +9,10 @@ Use `gemini-3.5-flash` as the default live model, while retaining the `GEMINI_MO
 environment override. The model identifier remains in the composition layer and is
 not coupled to policy, capability, or domain code.
 
+The proposer constructs the current Google Gen AI SDK client with `enterprise=True`,
+Application Default Credentials, and the stable `v1` API. No API key is accepted by
+application configuration.
+
 ## Rationale
 
 Google's current model lifecycle page lists Gemini 3.5 Flash as a stable model

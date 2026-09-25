@@ -49,7 +49,7 @@ class RealGeminiProposer:
 
         timeout_ms = int(os.getenv("GEMINI_TIMEOUT_MS", "15000"))
         client = genai.Client(
-            vertexai=True,
+            enterprise=True,
             http_options=types.HttpOptions(api_version="v1", timeout=timeout_ms),
         )
         prompt = (
