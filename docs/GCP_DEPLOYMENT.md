@@ -133,6 +133,9 @@ because availability changes.
    resource request fails and the UI reports `FAILED` / not released.
 5. Exercise safe and poisoned scenarios and confirm the denied executor does not run.
 
+Inside the workload, `python scripts/verify_attestation.py` performs the same
+resource-release check and exits nonzero unless the evidence is live and verified.
+
 Do not report attestation or protected-resource status as passed until these observed
 results are captured. A decoded JWT alone is not sufficient.
 

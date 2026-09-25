@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import re
 import shutil
-# This script invokes only a resolved git executable with constant arguments.
 import subprocess  # nosec B404
 from pathlib import Path
+
+# This script invokes only a resolved git executable with constant arguments.
 
 PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
