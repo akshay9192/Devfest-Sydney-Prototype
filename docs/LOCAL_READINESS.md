@@ -15,8 +15,8 @@ The cloud phase remains locked until every item below has current evidence.
 | Network-independent offline mode | PASS | no model/cloud client; socket-denial integration test |
 | Docker build and run | blocked | Docker executable unavailable |
 | Demo under 70 seconds | PASS | 65-second runbook; controller loop under 20 ms |
-| Clean README setup | PASS | fresh virtualenv install and all 59 tests passed |
-| Ten-cycle offline reliability | PASS | 10/10 complete reset/safe/poison/reset cycles |
+| Clean README setup | PASS | fresh virtualenv install and all 68 tests passed |
+| Twenty-cycle offline reliability | PASS | 20/20 complete reset/safe/poison/reset cycles |
 | Security scans | PARTIAL | Bandit, pip-audit, secret scan pass; Trivy/gitleaks unavailable |
 
 This document must never say PASS based on planned, mocked, cached, or unavailable

@@ -19,7 +19,7 @@ The engine uses that context for sensitivity and confirmation.
 
 **Verification:** PASS
 
-**Commit:** pending local-first acceptance commit
+**Commit:** `4317fd1`
 
 ## REG-003
 
@@ -37,10 +37,10 @@ repository configuration.
 
 **Fix:** Pytest now uses ignored, workspace-owned temp and cache directories.
 
-**Verification:** PASS — 59 tests, Ruff, and strict mypy passed from the fresh
+**Verification:** PASS — 68 tests, Ruff, and strict mypy passed from the fresh
 environment.
 
-**Commit:** pending local-first acceptance commit
+**Commit:** `4317fd1`
 
 ## REG-002
 
@@ -59,4 +59,4 @@ empty candidate state under the same lock.
 
 **Verification:** PASS
 
-**Commit:** pending local-first acceptance commit
+**Commit:** `4317fd1`

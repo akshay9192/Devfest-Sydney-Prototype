@@ -2,7 +2,7 @@
 
 ## Current local rehearsal
 
-The offline safe → reset → poison → deny → reset → safe sequence passed 10/10
+The offline safe → reset → poison → deny → reset → safe sequence passed 20/20
 consecutive cycles. The slowest controller-only cycle was under 20 ms. The stage
 runbook allocates 65 seconds to the interactive sequence, below the 70-second gate.
 The browser path was exercised at 1440×900, 1920×1080, and 390×844 with no console
