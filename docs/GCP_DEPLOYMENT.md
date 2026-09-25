@@ -86,7 +86,7 @@ gcloud iam workload-identity-pools providers create-oidc attestation-verifier \
   --issuer-uri="https://confidentialcomputing.googleapis.com" \
   --allowed-audiences="https://sts.googleapis.com" \
   --attribute-mapping='google.subject="gcpcs::"+assertion.submods.container.image_digest+"::"+assertion.submods.gce.project_number+"::"+assertion.submods.gce.instance_id,attribute.image_digest=assertion.submods.container.image_digest' \
-  --attribute-condition="assertion.swname == 'CONFIDENTIAL_SPACE' && 'STABLE' in assertion.submods.confidential_space.support_attributes && assertion.submods.container.cmd_override == ['python', '-m', 'app.cloud_verify']"
+  --attribute-condition="assertion.swname == 'CONFIDENTIAL_SPACE' && assertion.dbgstat == 'disabled-since-boot' && 'STABLE' in assertion.submods.confidential_space.support_attributes && assertion.submods.gce.project_number == 'WORKLOAD_OPERATOR_PROJECT_NUMBER' && 'WORKLOAD_SERVICE_ACCOUNT' in assertion.google_service_accounts && assertion.submods.container.cmd_override == ['python', '-m', 'app.cloud_verify']"
 ```
 
 Bind `roles/secretmanager.secretAccessor` on only that secret to the `principalSet`
@@ -104,6 +104,13 @@ The image launch policy permits only those three environment overrides and the
 one-shot `app.cloud_verify` command. The WIF provider condition checks that exact
 command override. Resource-level IAM still limits the federated identity to the one
 synthetic secret, so changing a resource name cannot broaden access.
+
+Replace `WORKLOAD_OPERATOR_PROJECT_NUMBER` and `WORKLOAD_SERVICE_ACCOUNT` with the
+numeric operator project and full service-account email before creating the
+provider. These conditions prevent the same public container digest from obtaining
+the identity when launched from another project or with another attached service
+account. `STABLE` and `dbgstat` reject debug and unsupported Confidential Space
+images. The secret IAM binding supplies the immutable image-digest restriction.
 
 ## Launch
 
