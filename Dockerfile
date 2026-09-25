@@ -1,4 +1,4 @@
-FROM python:3.12.14-slim-trixie@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9 AS builder
+FROM python:3.12.14-alpine3.23@sha256:d339953547bb5bc57eb5c1ff3224c40890ce56e494b13a52a574658e5a0f888a AS builder
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1
@@ -8,13 +8,13 @@ COPY pyproject.toml README.md ./
 COPY app ./app
 RUN python -m pip install --prefix=/install .
 
-FROM python:3.12.14-slim-trixie@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9
+FROM python:3.12.14-alpine3.23@sha256:d339953547bb5bc57eb5c1ff3224c40890ce56e494b13a52a574658e5a0f888a
 
 ENV APP_MODE=offline_demo \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN groupadd --system app && useradd --system --gid app --home-dir /app app
+RUN addgroup -S app && adduser -S -G app -h /app app
 WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY --chown=app:app app ./app
