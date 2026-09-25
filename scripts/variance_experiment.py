@@ -6,6 +6,7 @@ import os
 from collections import Counter
 from pathlib import Path
 
+from app.domain.models import AuthoritativeContext, Sensitivity
 from app.services.policy_engine import PolicyEngine, load_system_policy, load_validated_user_policy
 from app.services.proposer import DeterministicFakeProposer, RealGeminiProposer
 
@@ -40,7 +41,13 @@ def main() -> None:
     violations = 0
     for index in range(args.runs):
         proposal = proposer.propose(playbook=playbook, scenario=scenario)
-        decision = engine.evaluate(proposal, explicit_user_confirmation=False)
+        decision = engine.evaluate(
+            proposal,
+            AuthoritativeContext(
+                sensitivity=Sensitivity.CONFIDENTIAL,
+                explicit_user_confirmation=False,
+            ),
+        )
         if proposal.destination.value == "EXTERNAL" and decision.allowed:
             violations += 1
         results.append(

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Protocol
 
 from app.domain.models import Action, Decision, Proposal
@@ -16,6 +16,7 @@ class Executor(Protocol):
 @dataclass
 class SimulatedExecutor:
     call_count: int = 0
+    external_sink: list[str] = field(default_factory=list)
 
     def summarize_local(self) -> str:
         self.call_count += 1
@@ -23,7 +24,12 @@ class SimulatedExecutor:
 
     def simulated_external_upload(self, destination_id: str) -> str:
         self.call_count += 1
+        self.external_sink.append(destination_id)
         return f"Simulated upload to allowlisted destination: {destination_id}"
+
+    def reset(self) -> None:
+        self.call_count = 0
+        self.external_sink.clear()
 
 
 class CapabilityDenied(RuntimeError):

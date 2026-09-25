@@ -23,10 +23,16 @@ Authority descends in this order:
 4. `CANDIDATE_RULES.yaml` is untrusted staging data and is not loaded by the policy
    engine.
 
-The proposal's `reason` is display-only. Confirmation comes from authoritative
-application state, not from a model statement. Extra fields and unknown enum values
-are rejected. Loader, evaluation, attestation, or execution uncertainty produces a
-deny decision.
+The proposal's `reason`, sensitivity claim, and confirmation claim are untrusted.
+Document sensitivity and confirmation come from an immutable
+`AuthoritativeContext` populated by application state. Extra fields and unknown
+enum values are rejected. Loader, evaluation, attestation, or execution uncertainty
+produces a deny decision.
+
+Each response includes a small request-local event record. The UI renders proposal,
+policy, capability, execution, and receipt states from these events; it does not
+invent an authorization transition in JavaScript. Structured application logs retain
+only request ID, event, policy hash, decision, model, mode, and attestation status.
 
 ## Components
 

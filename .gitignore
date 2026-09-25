@@ -1,5 +1,6 @@
 .env
 .venv/
+.clean-venv/
 __pycache__/
 *.py[cod]
 .coverage
@@ -11,6 +12,10 @@ htmlcov/
 .codex-pip-audit-cache/
 artifacts/*.json
 artifacts/e2e/*.png
+artifacts/pytest-tmp/
+artifacts/pytest-cache/
+artifacts/final-tmp/
+artifacts/final-cache/
 !artifacts/.gitkeep
 !artifacts/e2e/.gitkeep
 playwright-report/

@@ -45,6 +45,7 @@ def _build_service() -> DemoService:
         return DemoService(
             config_dir=config_dir,
             proposer=RealGeminiProposer(model_identifier=model),
+            fallback_proposer=DeterministicFakeProposer(),
             offline=False,
             attestation_provider=attestation_provider,
         )

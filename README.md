@@ -70,7 +70,10 @@ fails closed.
 `RealGeminiProposer` uses Google's current `google-genai` Python SDK with a Pydantic
 response schema and validates the parsed value again. Gemini receives a synthetic
 scenario and advisory playbook, with no tools, credentials, direct filesystem, or
-policy mutation access. The model ID is configurable with `GEMINI_MODEL`; the
+policy mutation access. Calls use the stable `v1` API and a configurable 15-second
+timeout (`GEMINI_TIMEOUT_MS`). If a live call fails, the interface explicitly says
+that it is using a recorded proposal; the real controller and capability gate still
+run. The model ID is configurable with `GEMINI_MODEL`; the
 default is `gemini-2.5-flash`, which official lifecycle notes schedule for retirement
 on 2026-10-16, so select a currently supported model before deployment.
 
@@ -100,6 +103,7 @@ Python 3.12 or newer is required.
 
 ```powershell
 python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade "pip>=26.2.1"
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 .\.venv\Scripts\python.exe -m playwright install chromium
 .\.venv\Scripts\python.exe scripts\run_demo.py --mode offline_demo
@@ -129,10 +133,14 @@ make typecheck
 make test
 make test-e2e
 make verify
+make release-check
 ```
 
 The suite includes unit, integration, Hypothesis property, adversarial, concurrency,
 and rendered Playwright tests. Core domain/service coverage must be at least 90%.
+`make release-check` is the definitive local gate and adds ten-cycle reliability
+and a Docker build. `make cloud-verify` is separate because it requires deployed
+infrastructure.
 
 ## Security tests
 

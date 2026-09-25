@@ -1,7 +1,7 @@
-from hypothesis import given
+from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from app.domain.models import Action, Destination, Proposal, Sensitivity
+from app.domain.models import Action, AuthoritativeContext, Destination, Proposal, Sensitivity
 from app.domain.policies import SystemPolicy, ValidatedUserPolicy
 from app.services.policy_engine import PolicyEngine
 
@@ -15,9 +15,14 @@ ENGINE = PolicyEngine(
     ),
     ValidatedUserPolicy(version=1, deny_all_external=False),
 )
+UNCONFIRMED = AuthoritativeContext(
+    sensitivity=Sensitivity.CONFIDENTIAL,
+    explicit_user_confirmation=False,
+)
 
 
 @given(st.text(min_size=1, max_size=1_000))
+@settings(max_examples=1_000)
 def test_arbitrary_reason_cannot_bypass_confidential_external_rule(reason: str) -> None:
     proposal = Proposal(
         action=Action.UPLOAD_EXTERNAL,
@@ -27,7 +32,7 @@ def test_arbitrary_reason_cannot_bypass_confidential_external_rule(reason: str) 
         destination_id="synthetic-research-sink",
         reason=reason,
     )
-    assert not ENGINE.evaluate(proposal, explicit_user_confirmation=False).allowed
+    assert not ENGINE.evaluate(proposal, UNCONFIRMED).allowed
 
 
 @given(st.text(min_size=1, max_size=1_000), st.text(min_size=1, max_size=1_000))
@@ -39,8 +44,8 @@ def test_changing_reason_alone_cannot_change_decision(first: str, second: str) -
         "user_confirmation": False,
         "destination_id": "synthetic-research-sink",
     }
-    one = ENGINE.evaluate(Proposal(**base, reason=first), explicit_user_confirmation=False)
-    two = ENGINE.evaluate(Proposal(**base, reason=second), explicit_user_confirmation=False)
+    one = ENGINE.evaluate(Proposal(**base, reason=first), UNCONFIRMED)
+    two = ENGINE.evaluate(Proposal(**base, reason=second), UNCONFIRMED)
     assert one == two
 
 
@@ -55,4 +60,31 @@ def test_arbitrary_playbook_text_does_not_enter_policy_engine(playbook: str) -> 
         destination_id="local-processor",
         reason="fixed",
     )
-    assert ENGINE.evaluate(proposal, explicit_user_confirmation=False).allowed
+    assert ENGINE.evaluate(proposal, UNCONFIRMED).allowed
+
+
+@given(
+    action=st.sampled_from(list(Action)),
+    sensitivity=st.sampled_from(list(Sensitivity)),
+    destination=st.sampled_from(list(Destination)),
+    destination_id=st.text(min_size=1, max_size=128),
+    reason=st.text(max_size=1_000),
+)
+def test_confidential_external_without_authoritative_confirmation_never_allows(
+    action: Action,
+    sensitivity: Sensitivity,
+    destination: Destination,
+    destination_id: str,
+    reason: str,
+) -> None:
+    proposal = Proposal(
+        action=action,
+        sensitivity=sensitivity,
+        destination=destination,
+        user_confirmation=True,
+        destination_id=destination_id,
+        reason=reason or "arbitrary",
+    )
+    decision = ENGINE.evaluate(proposal, UNCONFIRMED)
+    if action is Action.UPLOAD_EXTERNAL and destination is Destination.EXTERNAL:
+        assert not decision.allowed

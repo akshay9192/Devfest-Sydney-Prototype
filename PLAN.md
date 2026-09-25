@@ -71,24 +71,32 @@ receipt integrity/confidentiality. See `docs/THREAT_MODEL.md` for details.
 
 # Development phases
 
-1. Establish documentation, local skills, authority hierarchy, and policy schema.
-   Verify skill files and review the plan against prior art and current Google
-   documentation.
-2. Implement domain models, strict loaders, policy engine, capability gate, safe
-   receipt generation, and fake proposer. Verify unit, property, and adversarial
-   invariants.
-3. Add the current `google-genai` structured-output integration behind dependency
-   injection. Verify malformed output fails closed without requiring credentials.
-4. Build the single-screen FastAPI UI and poison/reset workflow. Verify rendered
-   safe, poison, reset, keyboard, console, and XSS behavior with Playwright.
-5. Add the container, Makefile, offline command, variance experiment, deployment
-   templates, and cloud verification scripts. Verify offline network independence
-   and container configuration statically; build when Docker is available.
-6. Run quality/security checks, attack the prototype, fix root causes, document
-   results, and perform a clean-room review.
-7. Deploy only after confirming an active intended GCP project. Verify real
-   attestation and both authorized and unauthorized resource access before claiming
-   cloud success.
+The work is governed by a strict local-first gate:
+
+1. Inspect the repository, environment, skills, architecture, and threat model.
+2. Complete the domain, authoritative context, deterministic policy, capability,
+   receipt, proposer, and local attestation boundaries.
+3. Build the stage interface around backend-generated events and explicit fallback
+   labels. Review desktop and mobile screenshots before accepting the design.
+4. Run unit, integration, property, adversarial, chaos, browser, accessibility,
+   repeatability, clean-install, container, and offline-network verification.
+5. Record every local requirement in `docs/LOCAL_READINESS.md`. Cloud work is
+   forbidden until every row has evidence and the document says `LOCAL READINESS:
+   PASS`.
+6. After that gate only, revalidate official GCP documentation, deploy the same
+   container to Confidential Space, and test real authorized and unauthorized
+   protected-resource release.
+7. Rehearse live and fallback paths, run `make release-check` and `make cloud-verify`,
+   clean the repository, and push only the fully verified result.
+
+The local design pass uses a deep graphite base (`#090b0f`), carbon panels
+(`#11151b`), quiet text (`#9aa5b4`), paper text (`#f3f6fa`), proposal blue
+(`#78a8ff`), allow green (`#63d6a3`), and deny coral (`#ff6b5e`). A network font is
+deliberately avoided because the offline guarantee is stronger than a cosmetic
+dependency; the narrow native stack is tuned through weight, width, and spacing.
+The page is a left-to-right authorization rail at desktop sizes and a vertical
+sequence on mobile. The only emphatic motion is the poisoned instruction entering
+and being stopped at the policy boundary.
 
 # Test strategy
 

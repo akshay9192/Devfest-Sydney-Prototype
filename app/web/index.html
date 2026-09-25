@@ -3,99 +3,85 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A deterministic authority boundary for probabilistic AI proposals.">
-    <title>Your AI assistant shouldn't trust you</title>
+    <meta name="description" content="A live demonstration of deterministic authority around probabilistic AI.">
+    <meta name="theme-color" content="#090b0f">
+    <title>The Trust Boundary — DevFest Sydney</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/static/styles.css">
     <script src="/static/app.js" defer></script>
   </head>
   <body>
     <main class="shell">
       <header class="masthead">
-        <div>
-          <p class="event">Google DevFest Sydney · live systems demonstration</p>
+        <div class="title-block">
+          <p class="event">Google DevFest Sydney / live systems demonstration</p>
           <h1>Your AI assistant<br>shouldn't trust you.</h1>
         </div>
-        <p class="thesis">Guidance can change. Authority stays put.</p>
+        <div class="thesis-block">
+          <p class="thesis">Guidance can influence intelligence.<br>It should not control authority.</p>
+          <p id="mode-label" class="mode-label">Rehearsal mode</p>
+        </div>
       </header>
 
-      <section class="control-strip" aria-label="Demo controls">
-        <button id="run-safe" type="button">Run scenario</button>
-        <button id="poison" class="warning" type="button">Poison playbook</button>
-        <button id="run-again" type="button">Run again</button>
-        <button id="reset" class="quiet" type="button">Reset</button>
-        <p id="announcement" class="announcement" role="status" aria-live="polite">Ready.</p>
+      <section class="controls" aria-label="Demo controls">
+        <button id="run-safe" type="button"><kbd>1</kbd> Run safe scenario</button>
+        <button id="poison" class="poison-control" type="button"><kbd>2</kbd> Poison playbook</button>
+        <button id="run-again" type="button"><kbd>3</kbd> Run poisoned scenario</button>
+        <button id="reset" class="quiet" type="button"><kbd>R</kbd> Reset</button>
+        <p id="announcement" class="announcement" role="status" aria-live="polite">System ready.</p>
       </section>
 
-      <section class="pipeline" aria-label="Decision pipeline">
-        <article class="stage playbook-stage">
-          <header>
-            <span class="stage-number">1</span>
-            <div>
-              <h2>Playbook</h2>
-              <p id="playbook-trust" class="trust">Untrusted / advisory</p>
-            </div>
-          </header>
+      <section class="pipeline" aria-label="Authority pipeline">
+        <article class="stage playbook-stage" data-stage="playbook">
+          <header><h2>Playbook</h2><span>Untrusted</span></header>
+          <p class="stage-role">Advisory memory</p>
           <pre id="playbook-text" tabindex="0">Loading…</pre>
           <p id="playbook-state" class="state-line">Original guidance</p>
         </article>
+        <div class="connector" aria-hidden="true"><i></i></div>
 
-        <div class="flow-mark" aria-hidden="true">→</div>
-
-        <article class="stage proposal-stage">
-          <header>
-            <span class="stage-number">2</span>
-            <div>
-              <h2>Gemini proposal</h2>
-              <p id="model-id" class="trust">Awaiting proposal</p>
-            </div>
-          </header>
-          <dl id="proposal-details" class="facts empty">
-            <div><dt>Action</dt><dd id="proposal-action">—</dd></div>
+        <article class="stage proposal-stage" data-stage="proposal">
+          <header><h2>Gemini</h2><span>Untrusted</span></header>
+          <p id="model-id" class="stage-role">Awaiting proposal</p>
+          <strong id="proposal-action" class="action-value">No proposal</strong>
+          <dl class="facts">
             <div><dt>Destination</dt><dd id="proposal-destination">—</dd></div>
-            <div><dt>Model claims confirmation</dt><dd id="proposal-confirmation">—</dd></div>
+            <div><dt>Claims approval</dt><dd id="proposal-confirmation">—</dd></div>
           </dl>
-          <p id="proposal-reason" class="reason">Run the scenario to see the advisory model output.</p>
+          <p id="proposal-reason" class="reason">The model can propose. It cannot act.</p>
         </article>
+        <div class="connector boundary-connector" aria-hidden="true"><i></i><b>authority begins</b></div>
 
-        <div class="flow-mark" aria-hidden="true">→</div>
-
-        <article class="stage decision-stage">
-          <header>
-            <span class="stage-number">3</span>
-            <div>
-              <h2>Policy decision</h2>
-              <p class="trust">Deterministic / authoritative</p>
-            </div>
-          </header>
+        <article class="stage policy-stage" data-stage="policy">
+          <header><h2>Policy</h2><span>Authoritative</span></header>
+          <p class="stage-role">Deterministic Python</p>
           <div id="decision" class="decision waiting">Waiting</div>
-          <p id="decision-reason" class="reason">Python evaluates authoritative state before any capability is available.</p>
+          <p id="decision-reason" class="reason">Authoritative facts decide.</p>
+          <p id="policy-hash" class="hash">Policy hash: loading…</p>
+        </article>
+        <div class="connector" aria-hidden="true"><i></i></div>
+
+        <article class="stage capability-stage" data-stage="capability">
+          <header><h2>Capability</h2><span>Enforced</span></header>
+          <p class="stage-role">Fixed allowlist</p>
+          <div id="capability-state" class="capability-state locked"><span class="lock-mark">×</span><strong>Locked</strong></div>
           <p id="execution-result" class="execution">No executor invoked.</p>
         </article>
       </section>
 
-      <section class="boundary" aria-label="Confidential runtime status">
-        <div>
-          <h2>Confidential runtime</h2>
-          <p id="attestation-explainer">Controller-held policy and protected state belong behind this boundary.</p>
-        </div>
-        <div class="attestation">
-          <span>Attestation</span>
-          <strong id="attestation-status">Loading…</strong>
-        </div>
-        <div class="resource">
-          <span>Protected resource</span>
-          <strong id="resource-status">Not released</strong>
-        </div>
+      <section class="runtime" aria-label="Runtime evidence">
+        <div><span>Runtime evidence</span><strong id="attestation-status">Loading…</strong></div>
+        <div><span>Protected resource</span><strong id="resource-status">Not released</strong></div>
+        <div><span>Last verified event</span><strong id="last-event">System initialized</strong></div>
+        <details class="receipt-panel">
+          <summary>Inspect decision receipt</summary>
+          <pre id="receipt">No decision yet.</pre>
+        </details>
       </section>
-
-      <details class="receipt-panel">
-        <summary>Decision receipt <span>safe metadata only</span></summary>
-        <pre id="receipt">No decision yet.</pre>
-      </details>
 
       <footer>
         <p>Gemini proposes. Python decides. The environment controls capability.</p>
-        <p id="policy-hash" class="hash">Policy hash: loading…</p>
+        <p class="shortcuts" aria-hidden="true">1 safe / 2 poison / 3 run / R reset</p>
       </footer>
     </main>
   </body>

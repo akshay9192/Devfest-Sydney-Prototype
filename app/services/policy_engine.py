@@ -6,7 +6,15 @@ from typing import Any
 import yaml
 from pydantic import ValidationError
 
-from app.domain.models import Action, Decision, DecisionOutcome, Destination, Proposal, Sensitivity
+from app.domain.models import (
+    Action,
+    AuthoritativeContext,
+    Decision,
+    DecisionOutcome,
+    Destination,
+    Proposal,
+    Sensitivity,
+)
 from app.domain.policies import SystemPolicy, ValidatedUserPolicy
 
 
@@ -43,6 +51,7 @@ def deny(*reason_codes: str, rule: str = "fail_closed") -> Decision:
         outcome=DecisionOutcome.DENY,
         matched_rule_ids=(rule,),
         reason_codes=tuple(reason_codes),
+        human_explanation=reason_codes[0].replace("_", " ").capitalize(),
     )
 
 
@@ -51,13 +60,13 @@ class PolicyEngine:
         self._system = system
         self._user = user
 
-    def evaluate(self, proposal: Proposal, *, explicit_user_confirmation: bool) -> Decision:
+    def evaluate(self, proposal: Proposal, context: AuthoritativeContext) -> Decision:
         try:
-            return self._evaluate(proposal, explicit_user_confirmation=explicit_user_confirmation)
+            return self._evaluate(proposal, context)
         except Exception:
             return deny("POLICY_EVALUATION_ERROR")
 
-    def _evaluate(self, proposal: Proposal, *, explicit_user_confirmation: bool) -> Decision:
+    def _evaluate(self, proposal: Proposal, context: AuthoritativeContext) -> Decision:
         if proposal.action.value not in self._system.allowed_actions:
             return deny("ACTION_NOT_ALLOWLISTED", rule="system.allowed_actions")
 
@@ -68,6 +77,7 @@ class PolicyEngine:
                 outcome=DecisionOutcome.ALLOW,
                 matched_rule_ids=("system.local_summary",),
                 reason_codes=("LOCAL_PROCESSING",),
+                human_explanation="Local processing is an allowlisted capability.",
             )
 
         if proposal.action is Action.ASK_USER_CONFIRMATION:
@@ -87,13 +97,17 @@ class PolicyEngine:
 
         confirmation_required = (
             self._system.confidential_external_requires_confirmation
-            and proposal.sensitivity is Sensitivity.CONFIDENTIAL
+            and context.sensitivity is Sensitivity.CONFIDENTIAL
         )
-        if confirmation_required and not explicit_user_confirmation:
+        if confirmation_required and not context.explicit_user_confirmation:
             return deny("EXPLICIT_CONFIRMATION_REQUIRED", rule="system.confidential_external")
 
         return Decision(
             outcome=DecisionOutcome.ALLOW,
             matched_rule_ids=("system.external_allowlist", "system.confidential_external"),
             reason_codes=("AUTHORIZED_EXTERNAL_SIMULATION",),
+            human_explanation=(
+                "Authoritative confirmation and the destination allowlist permit "
+                "this simulated external action."
+            ),
         )

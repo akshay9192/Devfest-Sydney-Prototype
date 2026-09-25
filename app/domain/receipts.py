@@ -15,6 +15,7 @@ class DecisionReceipt(BaseModel):
     system_policy_sha256: str
     validated_user_policy_sha256: str
     model_identifier: str
+    runtime_mode: str
     proposal: dict[str, Any] | None
     decision: str
     matched_rule_ids: tuple[str, ...]

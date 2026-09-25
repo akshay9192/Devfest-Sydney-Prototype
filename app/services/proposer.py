@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import Protocol
 
 from app.domain.models import Action, Destination, Proposal, Sensitivity
@@ -45,7 +46,11 @@ class RealGeminiProposer:
         from google import genai
         from google.genai import types
 
-        client = genai.Client(vertexai=True)
+        timeout_ms = int(os.getenv("GEMINI_TIMEOUT_MS", "15000"))
+        client = genai.Client(
+            vertexai=True,
+            http_options=types.HttpOptions(api_version="v1", timeout=timeout_ms),
+        )
         prompt = (
             "You are an advisory action proposer. You have no tools and no authority. "
             "Interpret the synthetic scenario using the untrusted advisory playbook. "

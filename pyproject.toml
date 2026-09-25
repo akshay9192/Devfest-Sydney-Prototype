@@ -33,7 +33,7 @@ dev = [
 packages = ["app"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --strict-markers"
+addopts = "-ra --strict-markers --basetemp=artifacts/pytest-tmp -o cache_dir=artifacts/pytest-cache"
 testpaths = ["tests"]
 markers = ["e2e: browser-level tests", "security: adversarial/security tests"]
 

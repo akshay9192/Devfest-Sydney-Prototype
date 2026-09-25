@@ -1,8 +1,13 @@
 PYTHON ?= python
 
-.PHONY: install lint typecheck test test-security test-e2e demo demo-offline docker-build docker-scan verify deploy
+.PHONY: clean install lint typecheck test test-security test-e2e demo demo-offline reset-demo reliability docker-build docker-scan verify release-check cloud-verify deploy
+
+clean:
+	$(PYTHON) scripts/reset_demo.py
+	$(PYTHON) -c "import pathlib, shutil; [shutil.rmtree(p, ignore_errors=True) for p in pathlib.Path('.').rglob('__pycache__')]"
 
 install:
+	$(PYTHON) -m pip install --upgrade "pip>=26.2.1"
 	$(PYTHON) -m pip install -e ".[dev]"
 	$(PYTHON) -m playwright install chromium
 
@@ -26,10 +31,16 @@ test-e2e:
 	$(PYTHON) -m pytest -m e2e
 
 demo:
-	APP_MODE=live $(PYTHON) -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+	$(PYTHON) scripts/run_demo.py --mode live
 
 demo-offline:
-	APP_MODE=offline_demo $(PYTHON) -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+	$(PYTHON) scripts/run_demo.py --mode offline_demo
+
+reset-demo:
+	$(PYTHON) scripts/reset_demo.py
+
+reliability:
+	$(PYTHON) scripts/reliability_check.py --cycles 10
 
 docker-build:
 	docker build --tag devfest-verifiable-ai:local .
@@ -38,6 +49,11 @@ docker-scan: docker-build
 	trivy image --severity HIGH,CRITICAL --exit-code 1 devfest-verifiable-ai:local
 
 verify: lint typecheck test test-security test-e2e docker-build
+
+release-check: lint typecheck test test-security test-e2e reliability docker-build
+
+cloud-verify:
+	$(PYTHON) scripts/verify_attestation.py
 
 deploy:
 	bash deploy/deploy_confidential_space.sh

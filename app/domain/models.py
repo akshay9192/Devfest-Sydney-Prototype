@@ -33,6 +33,15 @@ class Proposal(BaseModel):
     reason: StrictStr = Field(min_length=1, max_length=1_000)
 
 
+class AuthoritativeContext(BaseModel):
+    """Facts supplied by the application, never inferred from model output."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    sensitivity: Sensitivity
+    explicit_user_confirmation: StrictBool
+
+
 class DecisionOutcome(StrEnum):
     ALLOW = "ALLOW"
     DENY = "DENY"
@@ -44,6 +53,7 @@ class Decision(BaseModel):
     outcome: DecisionOutcome
     matched_rule_ids: tuple[str, ...]
     reason_codes: tuple[str, ...]
+    human_explanation: str = "Policy evaluated deterministically."
 
     @property
     def allowed(self) -> bool:
