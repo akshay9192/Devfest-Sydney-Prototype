@@ -37,8 +37,14 @@ function renderState(state) {
   elements["mode-label"].textContent = state.model_identifier.startsWith("deterministic")
     ? "Rehearsal mode / recorded proposal" : "Live model mode";
   elements["policy-hash"].textContent = `Policy ${state.system_policy_sha256.slice(0, 12)}…`;
-  elements["attestation-status"].textContent = state.attestation.status;
-  elements["resource-status"].textContent = state.attestation.live ? "Release eligible" : "Not released";
+  const confidentialSpace = ["VERIFIED", "FAILED"].includes(state.attestation.status);
+  elements["attestation-status"].textContent = confidentialSpace
+    ? `CONFIDENTIAL SPACE / ${state.attestation.status}`
+    : state.attestation.status;
+  const resourceHash = state.attestation.safe_claims.resource_sha256;
+  elements["resource-status"].textContent = state.attestation.live && resourceHash
+    ? `Released / ${resourceHash.slice(0, 12)}…`
+    : "Not released";
 }
 
 function humanEvent(event) {

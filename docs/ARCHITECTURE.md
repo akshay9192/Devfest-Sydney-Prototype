@@ -86,3 +86,8 @@ container digest + Confidential Space/VM claims
 Attestation establishes measured environment and identity claims evaluated by the
 relying party. It does not establish that the policy is correct, the application is
 bug-free, or a recommendation is semantically sound.
+
+The same application image serves the local UI under its default command and runs
+`app.cloud_verify` as a claim-checked command override in Confidential Space. The
+cloud verifier has outbound access to attestation, STS, and Secret Manager and does
+not expose the stage UI or an inbound port.

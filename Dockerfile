@@ -18,8 +18,10 @@ RUN groupadd --system app && useradd --system --gid app --home-dir /app app
 WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY --chown=app:app app ./app
+LABEL "tee.launch_policy.allow_cmd_override"="true" \
+      "tee.launch_policy.allow_env_override"="WIF_AUDIENCE,PROTECTED_SECRET_RESOURCE,PROTECTED_SECRET_EXPECTED_SHA256" \
+      "tee.launch_policy.log_redirect"="always"
 USER app
-EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2)"]
 CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]

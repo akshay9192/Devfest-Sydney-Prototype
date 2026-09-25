@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-required=(GCP_PROJECT GCP_REGION GCP_ZONE WORKLOAD_SERVICE_ACCOUNT IMAGE_URI)
+required=(
+  GCP_PROJECT GCP_REGION GCP_ZONE WORKLOAD_SERVICE_ACCOUNT IMAGE_URI
+  WIF_AUDIENCE PROTECTED_SECRET_RESOURCE PROTECTED_SECRET_EXPECTED_SHA256
+)
 for name in "${required[@]}"; do
   if [[ -z "${!name:-}" ]]; then
     echo "Missing required environment variable: ${name}" >&2
@@ -31,7 +34,7 @@ gcloud compute instances create devfest-verifiable-ai \
   --image-family=confidential-space \
   --service-account="${WORKLOAD_SERVICE_ACCOUNT}" \
   --scopes=cloud-platform \
-  --metadata="^~^tee-image-reference=${IMAGE_URI}~tee-restart-policy=OnFailure~tee-container-log-redirect=cloud_logging"
+  --metadata="^~^tee-image-reference=${IMAGE_URI}~tee-cmd=[\"python\",\"-m\",\"app.cloud_verify\"]~tee-env-WIF_AUDIENCE=${WIF_AUDIENCE}~tee-env-PROTECTED_SECRET_RESOURCE=${PROTECTED_SECRET_RESOURCE}~tee-env-PROTECTED_SECRET_EXPECTED_SHA256=${PROTECTED_SECRET_EXPECTED_SHA256}~tee-restart-policy=Never~tee-container-log-redirect=cloud_logging"
 
 echo "Created production Confidential Space workload devfest-verifiable-ai."
 echo "Complete the claim-constrained WIF and protected-resource checks in docs/GCP_DEPLOYMENT.md."

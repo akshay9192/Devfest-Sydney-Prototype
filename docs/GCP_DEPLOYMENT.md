@@ -86,7 +86,7 @@ gcloud iam workload-identity-pools providers create-oidc attestation-verifier \
   --issuer-uri="https://confidentialcomputing.googleapis.com" \
   --allowed-audiences="https://sts.googleapis.com" \
   --attribute-mapping='google.subject="gcpcs::"+assertion.submods.container.image_digest+"::"+assertion.submods.gce.project_number+"::"+assertion.submods.gce.instance_id,attribute.image_digest=assertion.submods.container.image_digest' \
-  --attribute-condition="assertion.swname == 'CONFIDENTIAL_SPACE' && 'STABLE' in assertion.submods.confidential_space.support_attributes"
+  --attribute-condition="assertion.swname == 'CONFIDENTIAL_SPACE' && 'STABLE' in assertion.submods.confidential_space.support_attributes && assertion.submods.container.cmd_override == ['python', '-m', 'app.cloud_verify']"
 ```
 
 Bind `roles/secretmanager.secretAccessor` on only that secret to the `principalSet`
@@ -96,17 +96,14 @@ member escaping differs across shells.
 
 The workload requires these non-secret environment values:
 
-- `APP_MODE=live`
-- `ATTESTATION_MODE=confidential_space`
-- `GEMINI_MODEL` selected from the currently supported Vertex AI models
 - `WIF_AUDIENCE=//iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/devfest-attested/providers/attestation-verifier`
 - `PROTECTED_SECRET_RESOURCE=projects/PROJECT_ID/secrets/SECRET/versions/VERSION`
 - `PROTECTED_SECRET_EXPECTED_SHA256`
 
-Confidential Space environment overrides require an image launch policy permitting
-those exact names. Before deployment, follow the current launch-policy documentation
-and add the names; do not permit arbitrary environment overrides. Add corresponding
-provider conditions if operators must not change their values.
+The image launch policy permits only those three environment overrides and the
+one-shot `app.cloud_verify` command. The WIF provider condition checks that exact
+command override. Resource-level IAM still limits the federated identity to the one
+synthetic secret, so changing a resource name cannot broaden access.
 
 ## Launch
 
@@ -119,6 +116,10 @@ make deploy
 The script uses the production `confidential-space` image, Secure Boot, SEV, and an
 N2D machine. Re-check supported machine types and zones immediately before running
 because availability changes.
+
+The cloud workload is a one-shot outbound verifier and the image declares no inbound
+port. The stage UI remains local. Container publishing in local/CI verification does
+not change the image digest or open a cloud firewall rule.
 
 ## Required verification
 
@@ -133,8 +134,9 @@ because availability changes.
    resource request fails and the UI reports `FAILED` / not released.
 5. Exercise safe and poisoned scenarios and confirm the denied executor does not run.
 
-Inside the workload, `python scripts/verify_attestation.py` performs the same
-resource-release check and exits nonzero unless the evidence is live and verified.
+Inside the workload, `python -m app.cloud_verify` performs the resource-release check
+and exits nonzero unless the evidence is live and verified. It emits only safe claim
+metadata and the released resource's SHA-256, never the plaintext value or token.
 
 Do not report attestation or protected-resource status as passed until these observed
 results are captured. A decoded JWT alone is not sufficient.
@@ -145,3 +147,4 @@ results are captured. A decoded JWT alone is not sufficient.
 - [Create and grant access to confidential resources](https://cloud.google.com/confidential-computing/confidential-space/docs/create-grant-access-confidential-resources)
 - [Attestation token claims](https://cloud.google.com/confidential-computing/confidential-space/docs/reference/token-claims)
 - [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials)
+- [Current source verification](CLOUD_VERIFICATION_SOURCES.md)

@@ -21,6 +21,31 @@ The engine uses that context for sensitivity and confirmation.
 
 **Commit:** `4317fd1`
 
+## REG-004
+
+**Symptom:** The deployment guide claimed the attestation verifier could run inside
+the workload container, but the runtime image did not contain that script and its
+default command only started the web server.
+
+**Root cause:** Local and cloud packaging paths had not been traced together. The
+verification helper lived outside the packaged `app` module.
+
+**Why existing tests missed it:** Local tests imported the source-tree script and no
+container-capable environment was available on the workstation.
+
+**Regression test:** CI now builds and runs the production image, exercises the UI
+through that container, and the packaged `app.cloud_verify` command fails closed
+without attestation configuration. Unit coverage also proves a released value with
+the wrong hash cannot produce verified evidence.
+
+**Fix:** Package the one-shot verifier under `app`, constrain its Confidential Space
+command/environment overrides with image launch-policy labels, and bind the WIF
+condition to that exact command override.
+
+**Verification:** Local code/security tests PASS; container CI pending.
+
+**Commit:** this cloud-readiness change
+
 ## REG-003
 
 **Symptom:** A fresh virtual environment could install successfully, but pytest

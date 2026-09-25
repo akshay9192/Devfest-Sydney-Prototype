@@ -111,9 +111,36 @@ def test_confidential_space_marks_verified_only_after_resource_release(
     assert evidence.resource_release_allowed
     assert evidence.safe_claims["image_digest"] == "sha256:expected"
     assert evidence.safe_claims["protected_resource"] == "released"
+    assert evidence.safe_claims["resource_sha256"] == hashlib.sha256(protected_value).hexdigest()
 
 
 def test_confidential_space_fails_closed_without_configuration(tmp_path: Path) -> None:
     evidence = ConfidentialSpaceAttestationProvider(token_path=tmp_path / "missing").evidence()
     assert evidence.status is AttestationStatus.FAILED
     assert not evidence.resource_release_allowed
+
+
+def test_confidential_space_fails_closed_on_resource_hash_mismatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    token_path = tmp_path / "token"
+    token_path.write_text("header.e30.signature", encoding="utf-8")
+    credentials = SimpleNamespace(token="short-lived-token", refresh=lambda request: None)
+    monkeypatch.setattr(
+        "app.services.attestation.google.auth.load_credentials_from_dict",
+        lambda *args, **kwargs: (credentials, None),
+    )
+    response = SimpleNamespace(
+        raise_for_status=lambda: None,
+        json=lambda: {"payload": {"data": base64.b64encode(b"wrong").decode("ascii")}},
+    )
+    monkeypatch.setattr("app.services.attestation.requests.get", lambda *args, **kwargs: response)
+    monkeypatch.setenv("WIF_AUDIENCE", "//iam.googleapis.com/projects/1/pools/p/providers/v")
+    monkeypatch.setenv("PROTECTED_SECRET_RESOURCE", "projects/demo/secrets/value/versions/1")
+    monkeypatch.setenv("PROTECTED_SECRET_EXPECTED_SHA256", hashlib.sha256(b"expected").hexdigest())
+
+    evidence = ConfidentialSpaceAttestationProvider(token_path=token_path).evidence()
+
+    assert evidence.status is AttestationStatus.FAILED
+    assert not evidence.resource_release_allowed
+    assert "resource_sha256" not in evidence.safe_claims

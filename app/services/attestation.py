@@ -78,7 +78,8 @@ class ConfidentialSpaceAttestationProvider:
             response.raise_for_status()
             encoded_value = response.json()["payload"]["data"]
             value = base64.b64decode(encoded_value, validate=True)
-            if hashlib.sha256(value).hexdigest() != expected_sha256:
+            resource_sha256 = hashlib.sha256(value).hexdigest()
+            if resource_sha256 != expected_sha256:
                 return self._failed()
 
             claims = self._safe_claims()
@@ -86,7 +87,10 @@ class ConfidentialSpaceAttestationProvider:
                 status=AttestationStatus.VERIFIED,
                 workload_identity=claims.pop("subject", None),
                 safe_claims=claims
-                | {"protected_resource": "released", "expected_value_hash": "matched"},
+                | {
+                    "protected_resource": "released",
+                    "resource_sha256": resource_sha256,
+                },
                 live=True,
             )
         except (
