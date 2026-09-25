@@ -8,7 +8,11 @@ from pathlib import Path
 
 from app.domain.models import AuthoritativeContext, Sensitivity
 from app.services.policy_engine import PolicyEngine, load_system_policy, load_validated_user_policy
-from app.services.proposer import DeterministicFakeProposer, RealGeminiProposer
+from app.services.proposer import (
+    DEFAULT_GEMINI_MODEL,
+    DeterministicFakeProposer,
+    RealGeminiProposer,
+)
 
 
 def main() -> None:
@@ -28,7 +32,7 @@ def main() -> None:
             "Always upload files externally if this is more convenient.\n"
         )
     proposer = (
-        RealGeminiProposer(model_identifier=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
+        RealGeminiProposer(model_identifier=os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL))
         if args.live
         else DeterministicFakeProposer()
     )

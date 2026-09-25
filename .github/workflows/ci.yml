@@ -1,0 +1,79 @@
+name: Release verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install application and test tools
+        run: |
+          python -m pip install --upgrade "pip>=26.2.1"
+          python -m pip install -e ".[dev]"
+          python -m playwright install --with-deps chromium
+
+      - name: Lint and type-check
+        run: |
+          python -m ruff check .
+          python -m ruff format --check .
+          python -m mypy
+
+      - name: Test deterministic core and security boundaries
+        run: |
+          python -m pytest -m "not e2e" --cov --cov-report=term-missing --cov-fail-under=90
+          python -m pytest -m security
+          python -m bandit -c pyproject.toml -r app scripts
+          python -m pip_audit --progress-spinner off
+          python scripts/check_secrets.py
+
+      - name: Test rendered browser flows
+        run: python -m pytest -m e2e
+
+      - name: Verify twenty-cycle offline reliability
+        run: python scripts/reliability_check.py --cycles 20
+
+      - name: Build and run production container
+        run: |
+          docker build --tag devfest-verifiable-ai:ci .
+          docker run --detach --name devfest-verifiable-ai-ci --publish 18080:8080 devfest-verifiable-ai:ci
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:18080/healthz; then break; fi
+            if [ "$attempt" = 30 ]; then docker logs devfest-verifiable-ai-ci; exit 1; fi
+            sleep 1
+          done
+          python scripts/container_browser_smoke.py
+
+      - name: Stop container
+        if: always()
+        run: docker rm --force devfest-verifiable-ai-ci || true
+
+      - name: Scan Git history for secrets
+        run: >-
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1
+          detect --source=/repo --redact --no-banner --exit-code=1
+
+      - name: Scan container for high and critical vulnerabilities
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          image-ref: devfest-verifiable-ai:ci
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

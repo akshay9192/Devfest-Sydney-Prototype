@@ -11,7 +11,11 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool
 
 from app.services.attestation import ConfidentialSpaceAttestationProvider
 from app.services.demo_service import DemoService
-from app.services.proposer import DeterministicFakeProposer, RealGeminiProposer
+from app.services.proposer import (
+    DEFAULT_GEMINI_MODEL,
+    DeterministicFakeProposer,
+    RealGeminiProposer,
+)
 
 APP_ROOT = Path(__file__).resolve().parent
 CONFIG_DIR = APP_ROOT / "config"
@@ -35,7 +39,7 @@ def _build_service() -> DemoService:
             offline=True,
         )
     if mode == "live":
-        model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        model = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
         attestation_mode = os.getenv("ATTESTATION_MODE", "local")
         attestation_provider = (
             ConfidentialSpaceAttestationProvider()

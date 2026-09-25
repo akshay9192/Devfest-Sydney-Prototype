@@ -40,7 +40,7 @@ reset-demo:
 	$(PYTHON) scripts/reset_demo.py
 
 reliability:
-	$(PYTHON) scripts/reliability_check.py --cycles 10
+	$(PYTHON) scripts/reliability_check.py --cycles 20
 
 docker-build:
 	docker build --tag devfest-verifiable-ai:local .
@@ -53,7 +53,7 @@ verify: lint typecheck test test-security test-e2e docker-build
 release-check: lint typecheck test test-security test-e2e reliability docker-build
 
 cloud-verify:
-	$(PYTHON) scripts/verify_attestation.py
+	$(PYTHON) -m app.cloud_verify
 
 deploy:
 	bash deploy/deploy_confidential_space.sh
