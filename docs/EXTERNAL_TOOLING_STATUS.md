@@ -6,7 +6,7 @@ Checked on 2026-09-25 on the local Windows host.
 |---|---|---|
 | Python | installed | 3.12.6 |
 | Git | installed | 2.47.0.windows.2 |
-| GitHub CLI | installed; authentication invalid | 2.97.0; `gh auth status` reports an invalid stored token. Git transport is independently authenticated. Interactive `gh auth login` is required to repair it. |
+| GitHub CLI | installed and authenticated | 2.97.0; `gh auth status` verifies the active `akshay9192` account and Git transport uses HTTPS. |
 | Docker | missing locally | GitHub Actions built and ran commit `61ab1e2`, then passed browser smoke. This is CI evidence, not a local Docker pass. |
 | Google Cloud CLI | missing | Cloud resource creation is blocked until the official CLI or Cloud Shell and an intended billed project are available. |
 | Trivy | missing locally | CI uses the official Trivy action pinned to the immutable `v0.36.0` commit; the `61ab1e2` image had zero HIGH/CRITICAL findings. |
