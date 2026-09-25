@@ -42,9 +42,10 @@ the wrong hash cannot produce verified evidence.
 command/environment overrides with image launch-policy labels, and bind the WIF
 condition to that exact command override.
 
-**Verification:** Local code/security tests PASS; container CI pending.
+**Verification:** PASS. GitHub Actions built and ran the production image, completed
+browser smoke testing against it, and passed the container vulnerability gate.
 
-**Commit:** this cloud-readiness change
+**Commit:** `5935800`
 
 ## REG-005
 
@@ -62,9 +63,33 @@ release gate. CI also now runs `bash -n` against the deployment script.
 
 **Fix:** Apply Ruff's import formatting and rerun the full local checks.
 
-**Verification:** Local and replacement CI run pending.
+**Verification:** PASS. Local checks and the replacement GitHub Actions run passed.
 
-**Commit:** this CI repair change
+**Commit:** `5b66fac`
+
+## REG-006
+
+**Symptom:** Trivy rejected both Debian 12 and Debian 13 Python runtime images for
+ten HIGH vulnerabilities in base operating-system packages.
+
+**Root cause:** The Debian images contained affected util-linux, ACL, and gzip
+packages. Debian had published no fixed package versions when checked, so upgrading
+from bookworm to trixie changed versions without removing the findings.
+
+**Why existing tests missed it:** Docker and Trivy were unavailable on the local
+host. The first independent CI container scan exposed the base-image findings.
+
+**Regression test:** CI scans the built runtime image for all HIGH and CRITICAL
+findings, including vulnerabilities with no published fix, and fails through
+`scripts/check_trivy_report.py` when any are present.
+
+**Fix:** Use the current official Python 3.12 Alpine 3.23 image pinned by immutable
+manifest digest. No vulnerability was suppressed or ignored.
+
+**Verification:** PASS. CI built and ran the image, exercised the rendered UI, and
+reported zero HIGH/CRITICAL findings.
+
+**Commit:** `61ab1e2`
 
 ## REG-003
 
