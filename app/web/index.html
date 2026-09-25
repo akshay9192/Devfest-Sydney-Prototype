@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A deterministic authority boundary for probabilistic AI proposals.">
+    <title>Your AI assistant shouldn't trust you</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <div>
+          <p class="event">Google DevFest Sydney · live systems demonstration</p>
+          <h1>Your AI assistant<br>shouldn't trust you.</h1>
+        </div>
+        <p class="thesis">Guidance can change. Authority stays put.</p>
+      </header>
+
+      <section class="control-strip" aria-label="Demo controls">
+        <button id="run-safe" type="button">Run scenario</button>
+        <button id="poison" class="warning" type="button">Poison playbook</button>
+        <button id="run-again" type="button">Run again</button>
+        <button id="reset" class="quiet" type="button">Reset</button>
+        <p id="announcement" class="announcement" role="status" aria-live="polite">Ready.</p>
+      </section>
+
+      <section class="pipeline" aria-label="Decision pipeline">
+        <article class="stage playbook-stage">
+          <header>
+            <span class="stage-number">1</span>
+            <div>
+              <h2>Playbook</h2>
+              <p id="playbook-trust" class="trust">Untrusted / advisory</p>
+            </div>
+          </header>
+          <pre id="playbook-text" tabindex="0">Loading…</pre>
+          <p id="playbook-state" class="state-line">Original guidance</p>
+        </article>
+
+        <div class="flow-mark" aria-hidden="true">→</div>
+
+        <article class="stage proposal-stage">
+          <header>
+            <span class="stage-number">2</span>
+            <div>
+              <h2>Gemini proposal</h2>
+              <p id="model-id" class="trust">Awaiting proposal</p>
+            </div>
+          </header>
+          <dl id="proposal-details" class="facts empty">
+            <div><dt>Action</dt><dd id="proposal-action">—</dd></div>
+            <div><dt>Destination</dt><dd id="proposal-destination">—</dd></div>
+            <div><dt>Model claims confirmation</dt><dd id="proposal-confirmation">—</dd></div>
+          </dl>
+          <p id="proposal-reason" class="reason">Run the scenario to see the advisory model output.</p>
+        </article>
+
+        <div class="flow-mark" aria-hidden="true">→</div>
+
+        <article class="stage decision-stage">
+          <header>
+            <span class="stage-number">3</span>
+            <div>
+              <h2>Policy decision</h2>
+              <p class="trust">Deterministic / authoritative</p>
+            </div>
+          </header>
+          <div id="decision" class="decision waiting">Waiting</div>
+          <p id="decision-reason" class="reason">Python evaluates authoritative state before any capability is available.</p>
+          <p id="execution-result" class="execution">No executor invoked.</p>
+        </article>
+      </section>
+
+      <section class="boundary" aria-label="Confidential runtime status">
+        <div>
+          <h2>Confidential runtime</h2>
+          <p id="attestation-explainer">Controller-held policy and protected state belong behind this boundary.</p>
+        </div>
+        <div class="attestation">
+          <span>Attestation</span>
+          <strong id="attestation-status">Loading…</strong>
+        </div>
+        <div class="resource">
+          <span>Protected resource</span>
+          <strong id="resource-status">Not released</strong>
+        </div>
+      </section>
+
+      <details class="receipt-panel">
+        <summary>Decision receipt <span>safe metadata only</span></summary>
+        <pre id="receipt">No decision yet.</pre>
+      </details>
+
+      <footer>
+        <p>Gemini proposes. Python decides. The environment controls capability.</p>
+        <p id="policy-hash" class="hash">Policy hash: loading…</p>
+      </footer>
+    </main>
+  </body>
+</html>

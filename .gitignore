@@ -1,0 +1,17 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.codex-pip-audit-cache/
+artifacts/*.json
+artifacts/e2e/*.png
+!artifacts/.gitkeep
+!artifacts/e2e/.gitkeep
+playwright-report/
+test-results/

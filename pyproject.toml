@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "devfest-verifiable-ai"
+version = "0.1.0"
+description = "Deterministic authority boundaries around probabilistic AI proposals"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.117,<1",
+  "google-genai>=1.38,<2",
+  "pydantic>=2.11,<3",
+  "PyYAML>=6.0.2,<7",
+  "uvicorn[standard]>=0.36,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "bandit>=1.8.6,<2",
+  "httpx>=0.28.1,<1",
+  "hypothesis>=6.140,<7",
+  "mypy>=1.18,<2",
+  "pip-audit>=2.9,<3",
+  "playwright>=1.55,<2",
+  "pytest>=9.0.3,<10",
+  "pytest-cov>=7,<8",
+  "ruff>=0.13,<1",
+  "types-PyYAML>=6.0.12,<7",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+markers = ["e2e: browser-level tests", "security: adversarial/security tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["app/domain", "app/services"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106", "S603"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["app", "scripts"]
+exclude = ["tests/e2e"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]

@@ -1,0 +1,9 @@
+version: 1
+allowed_actions:
+  - SUMMARIZE_LOCALLY
+  - UPLOAD_EXTERNAL
+  - ASK_USER_CONFIRMATION
+external_destination_allowlist:
+  - synthetic-research-sink
+confidential_external_requires_confirmation: true
+maximum_request_characters: 4096
