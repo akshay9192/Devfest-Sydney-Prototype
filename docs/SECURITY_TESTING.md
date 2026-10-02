@@ -56,3 +56,9 @@ gitleaks found no leaks. Trivy HIGH/CRITICAL scans are recorded in
 evidence and verify cleanup when log retrieval fails. Local tests do not establish
 cloud IAM denial: the separately observed STS rejection is identified precisely
 in the cloud report.
+
+Gitleaks retains all default rules and permits only the exact public expected
+SHA-256 of the synthetic protected resource. A fixture with that hash and an
+unrelated synthetic credential pattern produced exactly one finding (the pattern),
+while full history scanning passed. This is a false-positive exception, not a
+credential allowlist.

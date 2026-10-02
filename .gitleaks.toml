@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public SHA-256 of the synthetic DevFest resource, not a credential"
+regexTarget = "secret"
+regexes = ['^4350401800f70db43df2e151b98fbdcd2f2f2a43a91e19ce26368f93b72b5a96$']

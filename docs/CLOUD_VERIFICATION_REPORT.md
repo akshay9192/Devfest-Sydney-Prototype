@@ -112,7 +112,11 @@ attestation authorizes protected-state release. Neither proves model correctness
 (a subset), core coverage 97.99%, twenty-cycle offline reliability 20/20.
 Ruff, formatting, mypy, Bandit, pip-audit, and repository secret scan passed.
 Trivy HIGH/CRITICAL scans passed, including the exact deployed image. Git-history
-gitleaks scanned 17 starting commits with no leaks. Deprecation warnings from
+gitleaks scanned 17 starting commits with no leaks. After publication, two
+`generic-api-key` findings were confirmed to be the public expected resource SHA-256
+in export commands. `.gitleaks.toml` allows only that exact hash; all default rules
+remain enabled. The 18-commit history then passed, while an unrelated synthetic
+credential-pattern fixture was still detected. CI explicitly loads this config. Deprecation warnings from
 Starlette TestClient and google-auth remain; credential configuration is constructed
 by application code rather than accepted from model output.
 
