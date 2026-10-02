@@ -1,0 +1,9 @@
+# Public configuration only: no credentials or protected plaintext.
+export GCP_PROJECT=newproject-490108
+export GCP_REGION=australia-southeast1
+export GCP_ZONE=australia-southeast1-b
+export WORKLOAD_SERVICE_ACCOUNT=devfest-confidential-workload@newproject-490108.iam.gserviceaccount.com
+export IMAGE_URI=australia-southeast1-docker.pkg.dev/newproject-490108/devfest/controller@sha256:4209cd130c3384b3f18a621691ae97934140065b29e4c523c69cf96fa8ed5431
+export WIF_AUDIENCE=//iam.googleapis.com/projects/131985117376/locations/global/workloadIdentityPools/devfest-attested/providers/attestation-verifier
+export PROTECTED_SECRET_RESOURCE=projects/131985117376/secrets/devfest-protected-state/versions/1
+export PROTECTED_SECRET_EXPECTED_SHA256=4350401800f70db43df2e151b98fbdcd2f2f2a43a91e19ce26368f93b72b5a96

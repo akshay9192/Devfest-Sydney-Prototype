@@ -1,7 +1,7 @@
 # ADR-001: Use Confidential Space for protected resource release
 
-- Status: Accepted for deployment; not yet deployed
-- Date: 2026-09-25
+- Status: Accepted; live resource release verified 2026-10-02
+- Date: 2026-09-25; official product guidance rechecked 2026-10-02
 
 ## Context
 
@@ -46,11 +46,27 @@ Gemini inference ran inside the TEE.
 
 ## Operational consequence
 
-The cloud demo is incomplete until two observations exist: an unauthorized local
-principal cannot read the secret, and the attested digest-constrained workload can.
-A decoded token or green UI label alone is insufficient.
+The attested digest-constrained workload obtained the synthetic resource. Local
+execution failed closed, and STS rejected synthetic unattested evidence. A valid
+alternate digest was not launched; an impersonated service-account resource request
+could not be made because impersonation was denied. These limits are explicit in
+`CLOUD_VERIFICATION_REPORT.md`. A decoded token or green UI label alone is insufficient.
 
 ## Sources
+
+October revalidation retains option A in the user brief: Confidential Space on Confidential VM.
+Confidential VM release notes include GA C4 TDX on 2026-09-23, but VM hardware
+support does not establish equivalent Confidential Space launcher support.
+Current Space documentation specifies SEV and TDX. Direct-VM Google Cloud
+Attestation documentation lists SEV and C3 TDX; SEV-SNP has a separate hardware
+report path. A direct-VM migration would require workload measurement and a release
+verifier, rather than changing product terminology.
+
+Verified `n2d-highcpu-2` (2 vCPUs, 2 GiB), SEV, production image,
+Secure Boot, and direct digest-bound WIF access. Confirm zone, CPU platforms,
+quota, and pricing before launch. Google's first-environment tutorial still
+documents the launcher token file. No application image rebuild is needed for
+deployment/documentation-only changes. See `CLOUD_VERIFICATION_SOURCES.md`.
 
 - [Confidential Space overview](https://cloud.google.com/confidential-computing/confidential-space/docs/confidential-space-overview)
 - [Create and grant access to confidential resources](https://cloud.google.com/confidential-computing/confidential-space/docs/create-grant-access-confidential-resources)

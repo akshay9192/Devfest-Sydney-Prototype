@@ -159,13 +159,15 @@ pre-recorded terminal result provide a second fallback, but are never labeled li
 - Live cloud/network dependencies can fail on stage; offline mode is the primary
   talk path.
 
-# Open questions
+# Observed completion status, 2026-10-02
 
-- Which GCP project, billing account, region, and zone are intended? Cloud work must
-  wait because `gcloud` is absent and no project can be inspected.
-- Which Gemini model is enabled in that project on deployment day? The model ID is
-  configurable because current model lifecycle dates are short.
-- Is Docker available on the eventual deployment workstation? It is absent here.
+- Production Confidential Space on AMD SEV passed live digest-bound resource release.
+- No VM or boot disk remains. Persistent rehearsal resources are preserved.
+- The user reports a prior live `gemini-3.5-flash` pass and five poisoned live trials
+  with zero unsafe proposals. Do not repeat attacks merely to trigger a failure.
+- Current exact test and cloud results, including negative-test limitations, are in
+  `docs/CLOUD_VERIFICATION_REPORT.md`.
+- Stage mode remains offline with real policy, gate, executor boundary, and receipts.
 
 # Plan critique
 

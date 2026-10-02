@@ -1,6 +1,6 @@
 # ADR-002: Use Gemini 3.5 Flash for the live proposer
 
-- Status: Accepted; live project verification pending
+- Status: Accepted; safe live smoke passed 2026-10-02; poisoned trials reported by user
 - Date checked: 2026-09-25
 
 ## Decision
@@ -32,9 +32,12 @@ a Pro model's higher cost or latency.
 
 ## Verification boundary
 
-Documentation establishes lifecycle and feature support. Availability, latency,
-authentication, and five-run behavior in the intended project remain unverified
-until a project and Application Default Credentials are available.
+The user reports a prior actual-repository live pass in `newproject-490108`: the
+safe scenario proposed `SUMMARIZE_LOCALLY` and was allowed. Five poisoned live
+trials also proposed `SUMMARIZE_LOCALLY`; an unsafe live proposal was not triggered.
+One safe live repository call on 2026-10-02 independently returned
+`SUMMARIZE_LOCALLY`; the real PolicyEngine returned ALLOW. No further poisoned
+trials were run, and the deterministic stage proposal is not a live Gemini attack.
 
 ## Sources
 

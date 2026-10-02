@@ -3,6 +3,23 @@
 Retrieved from official Google documentation on 2026-09-25. These sources govern
 the deployment design; planned commands are not evidence that deployment succeeded.
 
+## Rechecked 2026-10-02
+
+- [Confidential VM release notes](https://docs.cloud.google.com/confidential-computing/confidential-vm/docs/release-notes): C4 TDX GA on September 23, 2026; SEV-SNP boot/performance issue noted July 28 through an expected November resolution.
+- [Confidential Space release notes](https://docs.cloud.google.com/confidential-computing/confidential-space/docs/release-notes): production image 260800 announced September 15, 2026. The project resolved production `confidential-space-260800` before launch.
+- [Runtime overview](https://docs.cloud.google.com/confidential-computing/confidential-space/docs/confidential-space-overview): a hardened OS and launcher run on Confidential VM; Google Cloud Attestation supports SEV and TDX.
+- [Supported VM configurations](https://docs.cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations): SEV supports N2D/C2D/C3D/C4D; N2D SEV-SNP and TDX have specific zone lists. Query CPU platforms before selecting SEV.
+- [Direct VM attestation](https://docs.cloud.google.com/confidential-computing/confidential-vm/docs/attestation): vTPM boot evidence differs from SEV-SNP/TDX hardware reports; Google Cloud Attestation lists SEV and C3 TDX. A plain VM does not supply Space launcher measurements.
+- [First Space environment](https://docs.cloud.google.com/confidential-computing/confidential-space/docs/create-your-first-confidential-space-environment): documents `/run/container_launcher/attestation_verifier_claims_token` as an external-account credential source.
+- [Direct resource access](https://docs.cloud.google.com/confidential-computing/confidential-space/docs/create-grant-access-confidential-resources): WIF maps signed assertions to container-digest IAM; this remains the selected release pattern.
+- [Deployment](https://docs.cloud.google.com/confidential-computing/confidential-space/docs/deploy-workloads): CPU SEV/TDX, production family, Secure Boot, N2D SEV `MIGRATE`, attached account, and launcher metadata.
+- [Runtime limit](https://docs.cloud.google.com/compute/docs/instances/limit-vm-runtime): `--max-run-duration` with `--instance-termination-action=DELETE` bounds VM lifetime. Installed GA gcloud help also exposes both flags.
+- [Confidential VM pricing](https://cloud.google.com/confidential-computing/confidential-vm/pricing): include the confidential surcharge in addition to compute, disk, external IP, and API/storage costs. Project pricing and credit balance have not been observed here.
+
+These are product checks, not deployment evidence. Retain Confidential Space on
+SEV Confidential VM; newer VM TDX GA hardware does not automatically
+satisfy the existing Space launcher/WIF path.
+
 | Topic | Verified point | Official source |
 |---|---|---|
 | Confidential Space overview | A container runs on the hardened Confidential Space image on a Confidential VM; Google Cloud Attestation supports SEV and TDX. | <https://docs.cloud.google.com/confidential-computing/confidential-space/docs/confidential-space-overview> |

@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-10-02T04:57:10.448813439Z",
+  "instance_id": "6992249053452076981",
+  "historical_live_result": true,
+  "evidence": {
+    "status": "VERIFIED",
+    "live": true,
+    "workload_identity": "https://www.googleapis.com/compute/v1/projects/newproject-490108/zones/australia-southeast1-b/instances/devfest-verifiable-ai",
+    "safe_claims": {
+      "image_digest": "sha256:4209cd130c3384b3f18a621691ae97934140065b29e4c523c69cf96fa8ed5431",
+      "project_id": "newproject-490108",
+      "protected_resource": "released",
+      "resource_sha256": "4350401800f70db43df2e151b98fbdcd2f2f2a43a91e19ce26368f93b72b5a96",
+      "software": "CONFIDENTIAL_SPACE",
+      "zone": "australia-southeast1-b"
+    }
+  }
+}

@@ -1,29 +1,24 @@
 # GCP cleanup
 
-No resources have been created yet. After a future verified run, classify every
-resource as `KEEP FOR DEVFEST` or `DELETE/STOP NOW` and record the decision in the
-cloud verification report.
-
-With the intended project selected, the minimal cleanup sequence is:
+After collecting safe evidence, delete the disposable verifier immediately:
 
 ```bash
-gcloud compute instances delete devfest-verifiable-ai --zone="$GCP_ZONE" --project="$GCP_PROJECT"
-gcloud secrets remove-iam-policy-binding devfest-verifiable-ai-secret \
-  --project="$GCP_PROJECT" --member="$ATTESTED_PRINCIPAL_SET" \
-  --role=roles/secretmanager.secretAccessor
-gcloud secrets delete devfest-verifiable-ai-secret --project="$GCP_PROJECT"
-gcloud iam workload-identity-pools providers delete attestation-verifier \
-  --workload-identity-pool=devfest-verifiable-ai-wif --location=global \
-  --project="$GCP_PROJECT"
-gcloud iam workload-identity-pools delete devfest-verifiable-ai-wif \
-  --location=global --project="$GCP_PROJECT"
-gcloud artifacts repositories delete devfest-verifiable-ai \
-  --location="$GCP_REGION" --project="$GCP_PROJECT"
-gcloud iam service-accounts delete \
-  "devfest-verifiable-ai-workload@$GCP_PROJECT.iam.gserviceaccount.com" \
-  --project="$GCP_PROJECT"
+gcloud compute instances delete devfest-verifiable-ai \
+  --zone="$GCP_ZONE" --project=newproject-490108 --quiet
+gcloud compute instances list --project=newproject-490108
+gcloud compute disks list --project=newproject-490108
 ```
 
-Inspect each target before confirming deletion. Deleting the VM stops compute cost;
-Artifact Registry storage, Secret Manager versions, and retained logs can continue
-to incur small charges until removed under the project's retention rules.
+The deployment enables boot-disk auto-delete and a 30-minute automatic VM deletion
+backstop. Verify the boot disk is gone; stopping alone leaves disk charges. An
+already auto-deleted VM can produce a not-found error: confirm using inventory.
+
+Keep the `devfest` Artifact Registry repository and final digest-pinned image,
+`devfest-attested` pool and `attestation-verifier` provider, dedicated workload
+service account, `devfest-protected-state` synthetic secret, required digest-bound
+IAM, and safe evidence/logs. Do not delete these persistent rehearsal resources
+or remove their access bindings during routine cleanup.
+
+The 2026-10-02 verifier VM and boot disk were deleted; final instance/disk
+inventory was empty. See `CLOUD_VERIFICATION_REPORT.md` for observed evidence.
+Persistent storage, secret versions, and logs can incur small ongoing charges.
