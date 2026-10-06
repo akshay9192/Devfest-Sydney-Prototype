@@ -179,23 +179,23 @@
         "dispatched_at": "2026-10-06T10:35:14Z"
       },
       "result": {
-        "agent_id": "/root/slide_05",
+        "agent_id": "/root",
         "backend_used": "built-in image tool",
-        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110c8-036b-7fd1-accd-f9e0b0f28591\\exec-a4540dec-3133-4a8e-b641-e0b6abd1363c.png",
-        "selected_source_sha256": "0dbea847daf21aeba3f343dfe23627a7cb3bb882fb293615e1b77d2f2e74e7cd",
+        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110bc-ffaf-7e11-b06a-0fd18ccf9092\\exec-24090e6a-b984-4108-b4c8-d9d057ca3ff2.png",
+        "selected_source_sha256": "748f9dc5f4940aa67025691fca16544e4aaa56d7b100010c04bd5573c2d5b9fc",
         "final_image": "origin_image/slide_05.png",
-        "final_image_sha256": "0dbea847daf21aeba3f343dfe23627a7cb3bb882fb293615e1b77d2f2e74e7cd",
+        "final_image_sha256": "748f9dc5f4940aa67025691fca16544e4aaa56d7b100010c04bd5573c2d5b9fc",
         "expected_backend": "built-in image tool",
         "expected_backend_labels": [
           "built-in image tool",
           "image_gen"
         ],
         "sample_generation_method_matched": true,
-        "qa_note": "All text is legible and unclipped; the embedded QR decodes exactly to the repository URL.",
-        "recorded_at": "2026-10-06T10:38:30Z"
+        "qa_note": "Regenerated after authoritative cloud evidence merged; all text is exact and the embedded QR decodes to the repository URL.",
+        "recorded_at": "2026-10-06T11:00:02Z"
       },
       "blocker": null
     }
   ],
-  "updated_at": "2026-10-06T10:38:30Z"
+  "updated_at": "2026-10-06T11:00:02Z"
 }

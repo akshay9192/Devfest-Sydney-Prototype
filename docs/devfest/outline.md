@@ -35,7 +35,7 @@ Five slides, 16:9, architecture-first, with no live-demo dependency.
 - Role: conclusion and repository handoff
 - Point: policy decides whether an action may happen
 - Point: attestation decides which workload may receive protected state
-- Point: Gemini remains remote; this checkout contains design and local evidence, not current live attestation
+- Point: Gemini remains remote; captured cloud verification is historical evidence, not current live attestation
 - Visual: conclusion, repository QR, and the deterministic-boundaries takeaway
 
 No external source images are required. The repository QR is a strict local asset on

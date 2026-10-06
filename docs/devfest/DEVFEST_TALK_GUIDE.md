@@ -23,8 +23,9 @@ resource release.
 - Gemini is a remote Vertex AI service outside this project's TEE.
 - The repository is a teaching-oriented engineering synthesis, not a new research
   architecture.
-- This checkout documents the cloud design; it does not contain current live
-  attestation evidence.
+- Captured live verification on 2026-10-02 released the protected synthetic
+  resource from the expected workload and matched its expected hash.
+- That result is historical evidence, not a current live attestation.
 
 ## What not to claim
 
@@ -33,7 +34,7 @@ resource release.
   correctness.
 - Do not claim Gemini inference occurs inside the Confidential Space workload.
 - Do not describe the simulated upload as a real external integration.
-- Do not claim a live cloud verification or current attestation result.
+- Do not describe historical cloud evidence as current live attestation.
 - Do not claim research novelty.
 
 ## Five-slide structure

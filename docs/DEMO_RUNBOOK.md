@@ -31,3 +31,16 @@ live cloud deployment during the lightning talk.
 - If the process stops, restart offline mode and select Reset.
 - If the local machine fails, show the captured screenshot and narrate that it is a
   recorded local result.
+
+## Verified keyboard controls
+
+`1` runs the scenario; `2` poisons the playbook; `3` runs it again; `R` resets.
+These controls are implemented in `app/web/app.js` and exercised by browser tests.
+Both run controls use the current playbook: press `R` before `1` if a previous
+rehearsal left it poisoned.
+
+The unsafe proposal is deterministic/recorded. The user reports that five prior
+live Gemini poisoned trials all proposed `SUMMARIZE_LOCALLY`: zero unsafe proposals
+and zero unsafe authorizations. Do not narrate the recorded unsafe proposal as a
+live Gemini observation. Show cloud evidence separately only once captured; the
+offline cached fixture is not that evidence.

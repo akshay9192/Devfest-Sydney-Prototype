@@ -56,5 +56,6 @@ proves that Gemini is correct. Gemini remains a remote Vertex AI service outside
 this project's TEE.
 
 The repository's [cloud verification report](../CLOUD_VERIFICATION_REPORT.md)
-records the authoritative status as “cloud verification pending,” not current live
-attestation.
+captures a successful 2026-10-02 protected-resource release from the expected
+Confidential Space workload. It is historical verification evidence, not current
+live attestation.

@@ -45,7 +45,11 @@ workload identity through Workload Identity Federation and Secret Manager. Gemin
 inference remains remote and outside this project's TEE, and attestation does not
 prove model correctness.
 
-The full implementation, tests, limitations, and current cloud-verification status
-are in the repository. The model changed its mind. The security boundary didn't.
-We don't need deterministic intelligence. We need deterministic boundaries around
-probabilistic intelligence.
+On 2 October, captured live cloud verification released the protected synthetic
+resource from the expected workload and matched its expected hash. That is
+historical evidence, not a current live attestation.
+
+The full implementation, tests, limitations, and evidence are in the repository.
+The model changed its mind. The security boundary didn't. We don't need
+deterministic intelligence. We need deterministic boundaries around probabilistic
+intelligence.

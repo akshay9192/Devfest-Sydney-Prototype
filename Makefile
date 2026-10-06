@@ -1,6 +1,6 @@
 PYTHON ?= python
 
-.PHONY: clean install lint typecheck test test-security test-e2e demo demo-offline reset-demo reliability docker-build docker-scan verify release-check cloud-verify deploy
+.PHONY: clean install lint typecheck test test-security test-e2e demo demo-offline reset-demo reliability docker-build docker-scan verify release-check cloud-verify deploy cloud-rehearsal
 
 clean:
 	$(PYTHON) scripts/reset_demo.py
@@ -57,3 +57,6 @@ cloud-verify:
 
 deploy:
 	bash deploy/deploy_confidential_space.sh
+
+cloud-rehearsal:
+	$(PYTHON) -m scripts.cloud_rehearsal

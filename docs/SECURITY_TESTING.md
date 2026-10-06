@@ -45,3 +45,20 @@ Ruff, mypy, Bandit, pip-audit, and a repository-aware secret-pattern check run
 locally. Use gitleaks when installed for Git-history scanning. Trivy is reserved for
 the built container because it is unavailable without Docker. Any high or critical
 finding blocks release unless documented as a verified false positive.
+
+## Current observed verification (2026-10-02)
+
+`make release-check` passed: 84 non-E2E tests, 2 E2E tests, 18 security tests
+(a subset of the 84), 97.99% core coverage, and 20/20 reliability cycles. Ruff,
+mypy, Bandit, pip-audit, and the repository secret scan passed. Git-history
+gitleaks found no leaks. Trivy HIGH/CRITICAL scans are recorded in
+`CLOUD_VERIFICATION_REPORT.md`. Rehearsal tests reject unexpected image/project/hash
+evidence and verify cleanup when log retrieval fails. Local tests do not establish
+cloud IAM denial: the separately observed STS rejection is identified precisely
+in the cloud report.
+
+Gitleaks retains all default rules and permits only the exact public expected
+SHA-256 of the synthetic protected resource. A fixture with that hash and an
+unrelated synthetic credential pattern produced exactly one finding (the pattern),
+while full history scanning passed. This is a false-positive exception, not a
+credential allowlist.

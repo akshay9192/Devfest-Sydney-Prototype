@@ -12,7 +12,7 @@
       "DENY means the executor is never called.",
       "The attack is a controlled deterministic example, not an observed live Gemini result.",
       "Gemini inference remains remote and outside this project's TEE.",
-      "This checkout contains no current live cloud-attestation evidence."
+      "Captured cloud verification is historical evidence, not current live attestation."
     ]
   },
   "selected_image_backend": "built-in image tool",
@@ -147,7 +147,7 @@
       "key_points": [
         "Policy decides whether an action may happen.",
         "Attestation decides which workload may receive protected state.",
-        "Full implementation + tests + cloud verification status",
+        "Full implementation + tests + cloud verification",
         "github.com/akshay9192/Devfest-Sydney-Prototype",
         "We don't need deterministic intelligence. We need deterministic boundaries around probabilistic intelligence."
       ],
@@ -167,7 +167,7 @@
       },
       "constraints": [
         "The supplied QR is a strict input asset and must remain machine-readable.",
-        "No claim of successful or current cloud verification.",
+        "Historical verification may be described as captured; do not imply current live attestation.",
         "No icons, logos, or decorative imagery."
       ]
     }

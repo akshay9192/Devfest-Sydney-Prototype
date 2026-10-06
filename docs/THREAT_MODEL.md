@@ -63,3 +63,17 @@ of this workload.
 - Production policy is image-baked or fetched only after attestation and cannot be
   modified through the web API.
 - Demo documents and protected values are synthetic.
+
+## Cloud proof limits
+
+An SEV Confidential Space deployment combines hardware memory encryption with
+Google-managed vTPM boot evidence and launcher measurements. It is not a SEV-SNP
+hardware-signed report. Interpret successful Secret Manager access together with
+inspected provider conditions and resource/project IAM. Check inherited access
+before claiming the workload service account is denied.
+
+The one-shot verifier has no application listener. Audit existing network firewall
+rules before launch; absence of a new firewall rule does not prove the existing
+network denies inbound traffic. Delete disposable VMs promptly; the deployment
+adds an automatic 30-minute deletion backstop. Keep the persistent synthetic
+resource and digest-bound IAM for future rehearsals.

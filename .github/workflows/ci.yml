@@ -61,6 +61,23 @@ jobs:
           done
           python scripts/container_browser_smoke.py
 
+      - name: Verify container command override fails closed without attestation
+        run: |
+          set +e
+          docker run --rm devfest-verifiable-ai:ci -m app.cloud_verify > unattested-result.txt 2>&1
+          result=$?
+          set -e
+          test "$result" = 1
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          lines = Path("unattested-result.txt").read_text().splitlines()
+          evidence = next(json.loads(line) for line in lines if line.startswith("{"))
+          assert evidence["status"] == "FAILED"
+          assert evidence["live"] is False
+          assert evidence["safe_claims"] == {"protected_resource": "not released"}
+          PY
+
       - name: Stop container
         if: always()
         run: docker rm --force devfest-verifiable-ai-ci || true
@@ -68,7 +85,7 @@ jobs:
       - name: Scan Git history for secrets
         run: >-
           docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1
-          detect --source=/repo --redact --no-banner --exit-code=1
+          detect --source=/repo --config=/repo/.gitleaks.toml --redact --no-banner --exit-code=1
 
       - name: Scan container for high and critical vulnerabilities
         uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0

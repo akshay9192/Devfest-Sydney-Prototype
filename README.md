@@ -22,8 +22,8 @@ architecture. The upload executor is simulated and every document/value is
 synthetic.
 
 The local app does not provide live attestation. Its offline status is explicitly
-`CACHED ATTESTATION EXAMPLE`. Cloud status remains unverified until the checks in
-[`docs/GCP_DEPLOYMENT.md`](docs/GCP_DEPLOYMENT.md) are observed.
+`CACHED ATTESTATION EXAMPLE`. Live cloud resource release passed on 2026-10-02; see
+[`docs/CLOUD_VERIFICATION_REPORT.md`](docs/CLOUD_VERIFICATION_REPORT.md).
 
 ## Architecture
 
@@ -118,6 +118,10 @@ Open `http://127.0.0.1:8000`.
 
 ## Offline demo
 
+Stage controls: `1` run, `2` poison, `3` rerun, `R` reset. Reset before starting.
+The unsafe proposal is explicitly deterministic/recorded. Prior live Gemini trials
+reported by the user produced zero unsafe proposals in five poisoned runs.
+
 `make demo-offline` starts the same UI with deterministic fake proposals and cached
 example evidence. The policy engine, gate, executors, and receipts are real. This
 mode constructs no Gemini or cloud client and requires no Wi-Fi, DNS, credentials,
@@ -125,10 +129,21 @@ or GCP access.
 
 ## GCP deployment
 
+The 2026-10-02 product review retains production Confidential Space on Google Cloud
+Confidential VM technology (N2D/AMD SEV). The launcher token is not
+available on a plain Confidential VM. See captured live evidence and test limitations
+in [`docs/CLOUD_VERIFICATION_REPORT.md`](docs/CLOUD_VERIFICATION_REPORT.md).
+
 Read the decision in
 [`docs/ADR-001-CONFIDENTIAL-RUNTIME.md`](docs/ADR-001-CONFIDENTIAL-RUNTIME.md) and
 follow [`docs/GCP_DEPLOYMENT.md`](docs/GCP_DEPLOYMENT.md). The deployment script
-refuses an unexpected active project and requires a digest-pinned image.
+refuses unexpected resource identities and requires a digest-pinned image.
+For a complete launch/evidence/cleanup cycle:
+
+```bash
+source deploy/rehearsal.env.sh
+make PYTHON=.venv/bin/python cloud-rehearsal
+```
 
 ## Testing
 
@@ -178,8 +193,8 @@ guidance versus machine-enforced runtime authority.
 - The fake proposer changes on a known marker for a repeatable stage demonstration.
 - The simulated external sink performs no network upload.
 - Live Gemini behavior depends on project model availability and credentials.
-- Confidential Space deployment and resource release require a configured GCP
-  project and have not been verified from this checkout.
+- Rehearsal requires authenticated access to the configured GCP project. The captured
+  live result does not make the offline cached fixture live attestation.
 - TEE and platform side channels remain outside this prototype.
 
 ## DevFest Sydney lightning talk

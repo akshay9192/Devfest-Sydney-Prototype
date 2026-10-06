@@ -91,3 +91,18 @@ The same application image serves the local UI under its default command and run
 `app.cloud_verify` as a claim-checked command override in Confidential Space. The
 cloud verifier has outbound access to attestation, STS, and Secret Manager and does
 not expose the stage UI or an inbound port.
+
+## Product distinction, checked 2026-10-02
+
+Confidential Space is the hardened workload environment; its underlying Compute
+Engine instance uses Google Cloud Confidential VM technology. The existing
+`/run/container_launcher/attestation_verifier_claims_token` is supplied by the
+Confidential Space launcher, not by a plain Confidential VM. WIF verifies Google's
+signed assertions; local JWT decoding is only for safe display after resource
+access succeeds.
+
+The selected CPU design uses AMD SEV. Its boot attestation uses Google's managed
+vTPM; do not describe it as an AMD SEV-SNP hardware report or Intel TDX quote.
+SEV supplies hardware memory encryption. Gemini remains outside this workload.
+See `CLOUD_VERIFICATION_SOURCES.md` for current official sources and
+`CLOUD_VERIFICATION_REPORT.md` for observed execution status.
