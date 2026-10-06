@@ -1,0 +1,201 @@
+{
+  "run_status": "slides_recorded",
+  "deck_name": "DevFest_Sydney_2026",
+  "selected_backend": "built-in image tool",
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate",
+    "prompt_source": "approved Slide 2 architecture prompt derived from the user-approved presentation brief",
+    "size": "16:9 landscape; built-in default resolution",
+    "quality": "built-in default",
+    "approved_sample_path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\deck_work\\origin_image\\slide_02.png",
+    "input_context_preparation": "view_image local style and strict input assets before built-in generation",
+    "handoff_rule": "Use the same built-in image_gen generate path; return a blocker if unavailable."
+  },
+  "max_concurrent_slides": 3,
+  "slides": [
+    {
+      "slide_id": "slide_01",
+      "number": 1,
+      "title": "Your AI assistant shouldn't trust you.",
+      "job": "prompts/slide_01.json",
+      "out": "origin_image/slide_01.png",
+      "input_images": [
+        {
+          "path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\deck_work\\origin_image\\slide_02.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography, spacing, and line treatment only; do not copy layout or content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_01",
+        "agent_nickname": "slide_01",
+        "prompt": "prompts/slide_01.json",
+        "prompt_sha256": "71916a4a547d69e26023bb943c7592becffac6d98860bb0aaf5fee238ce9200d",
+        "dispatched_at": "2026-10-06T10:32:44Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110c5-5a72-7ad2-885f-5cba4250b844\\exec-45580cd3-f9bb-47b5-a6b2-c682f1c3fa4a.png",
+        "selected_source_sha256": "cdfc1e3b786428702f934563efad6c303b29aa56af4fde7efeb761288f5fec62",
+        "final_image": "origin_image/slide_01.png",
+        "final_image_sha256": "cdfc1e3b786428702f934563efad6c303b29aa56af4fde7efeb761288f5fec62",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Exact text is legible and unclipped; sparse warm-white editorial style matches the sample.",
+        "recorded_at": "2026-10-06T10:34:54Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_02",
+      "number": 2,
+      "title": "The model can suggest. Software decides.",
+      "job": "prompts/slide_02.json",
+      "out": "origin_image/slide_02.png",
+      "input_images": [],
+      "requires_context_images": false,
+      "status": "accepted",
+      "dispatch": null,
+      "result": {
+        "final_image": "origin_image/slide_02.png",
+        "accepted_sample": true
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_03",
+      "number": 3,
+      "title": "Bad guidance can change the proposal.",
+      "job": "prompts/slide_03.json",
+      "out": "origin_image/slide_03.png",
+      "input_images": [
+        {
+          "path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\deck_work\\origin_image\\slide_02.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography, spacing, and line treatment only; do not copy layout or content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_03",
+        "agent_nickname": "slide_03",
+        "prompt": "prompts/slide_03.json",
+        "prompt_sha256": "ccfcb62635d1d478d95d664bfb99444f4af2f95243b9ad0730206ead049d4e7b",
+        "dispatched_at": "2026-10-06T10:32:44Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110c5-84aa-76b2-8929-df5092f3ed11\\exec-66441495-2fec-4bbe-832e-2f1a5148c2f0.png",
+        "selected_source_sha256": "bd015dea887f9b9ae41fcd9cfa71c5f4d82b606ff8d912bc3153457a18baaa7f",
+        "final_image": "origin_image/slide_03.png",
+        "final_image_sha256": "bd015dea887f9b9ae41fcd9cfa71c5f4d82b606ff8d912bc3153457a18baaa7f",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Exact text is legible and unclipped; no policy outcome is revealed.",
+        "recorded_at": "2026-10-06T10:34:54Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_04",
+      "number": 4,
+      "title": "But the model doesn't own authority.",
+      "job": "prompts/slide_04.json",
+      "out": "origin_image/slide_04.png",
+      "input_images": [
+        {
+          "path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\deck_work\\origin_image\\slide_02.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography, spacing, and line treatment only; do not copy layout or content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_04",
+        "agent_nickname": "slide_04",
+        "prompt": "prompts/slide_04.json",
+        "prompt_sha256": "5091813309892423176ba1b9cc417c58f4f051fe1f558e5a0f99d15f3f6f31db",
+        "dispatched_at": "2026-10-06T10:32:44Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_04",
+        "backend_used": "built-in image tool",
+        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110c5-b033-7302-aab4-5d34dcfde43e\\exec-f9c8e65a-b42d-43fb-9da9-c4b579e78aab.png",
+        "selected_source_sha256": "d79ed27c07e55076f46e2adb9ac46ebb4a6c707ad28277bb6e19e8cfdb03936b",
+        "final_image": "origin_image/slide_04.png",
+        "final_image_sha256": "d79ed27c07e55076f46e2adb9ac46ebb4a6c707ad28277bb6e19e8cfdb03936b",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "DENY dominates the slide; all required text is exact and unclipped.",
+        "recorded_at": "2026-10-06T10:34:55Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_05",
+      "number": 5,
+      "title": "The model changed its mind. The security boundary didn't.",
+      "job": "prompts/slide_05.json",
+      "out": "origin_image/slide_05.png",
+      "input_images": [
+        {
+          "path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\deck_work\\origin_image\\slide_02.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography, spacing, and line treatment only; do not copy layout or content"
+        },
+        {
+          "path": "C:\\Users\\aksha\\Downloads\\USYD\\Projects\\Devfest-Sydney-Prototype\\docs\\devfest\\DevFest_Repo_QR.png",
+          "role": "strict input asset; repository QR code",
+          "fidelity": "preserve every QR module exactly; do not redraw, stylize, crop, blur, rotate, or alter it"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_05",
+        "agent_nickname": "slide_05",
+        "prompt": "prompts/slide_05.json",
+        "prompt_sha256": "10a6297a217f326c29fc912e549068343e4862963f9dc2f06f424c534a337bde",
+        "dispatched_at": "2026-10-06T10:35:14Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_05",
+        "backend_used": "built-in image tool",
+        "selected_source": "C:\\Users\\aksha\\.codex\\generated_images\\01a110c8-036b-7fd1-accd-f9e0b0f28591\\exec-a4540dec-3133-4a8e-b641-e0b6abd1363c.png",
+        "selected_source_sha256": "0dbea847daf21aeba3f343dfe23627a7cb3bb882fb293615e1b77d2f2e74e7cd",
+        "final_image": "origin_image/slide_05.png",
+        "final_image_sha256": "0dbea847daf21aeba3f343dfe23627a7cb3bb882fb293615e1b77d2f2e74e7cd",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "All text is legible and unclipped; the embedded QR decodes exactly to the repository URL.",
+        "recorded_at": "2026-10-06T10:38:30Z"
+      },
+      "blocker": null
+    }
+  ],
+  "updated_at": "2026-10-06T10:38:30Z"
+}

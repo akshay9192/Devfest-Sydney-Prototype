@@ -1,4 +1,4 @@
-# Three-minute DevFest script
+# Speaker notes
 
 ## Slide 1: Your AI assistant shouldn't trust you.
 

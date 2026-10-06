@@ -7,6 +7,10 @@ assistant. A playbook can influence Gemini's typed proposal; Python evaluates
 authoritative policy; a capability gate controls the only executors. Poisoning the
 playbook can change the proposal without granting the proposed action.
 
+> Don't put guarantees inside the prompt. Put guarantees around the model.
+>
+> The model can suggest. Software decides.
+
 > We don't need deterministic intelligence. We need deterministic boundaries around
 > probabilistic intelligence.
 
@@ -178,9 +182,15 @@ guidance versus machine-enforced runtime authority.
   project and have not been verified from this checkout.
 - TEE and platform side channels remain outside this prototype.
 
-## DevFest demo
+## DevFest Sydney lightning talk
 
-The exact sequence is in [`docs/DEMO_RUNBOOK.md`](docs/DEMO_RUNBOOK.md); the spoken
-script is in [`docs/DEVFEST_SCRIPT.md`](docs/DEVFEST_SCRIPT.md). The interactive
-portion is designed for about 65 seconds and the full script for under three
-minutes.
+The architecture-first talk is complete without a live demo:
+
+- [final five-slide deck](docs/devfest/DevFest_Sydney_2026.pptx)
+- [speaker script](docs/DEVFEST_SCRIPT.md)
+- [talk guide](docs/devfest/DEVFEST_TALK_GUIDE.md)
+- [architecture explainer](docs/devfest/DEVFEST_ARCHITECTURE.md)
+- [cloud verification report](docs/CLOUD_VERIFICATION_REPORT.md)
+
+The optional deterministic demo sequence remains in
+[`docs/DEMO_RUNBOOK.md`](docs/DEMO_RUNBOOK.md).
